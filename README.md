@@ -1,62 +1,45 @@
-# Fake News Detection Using Machine Learning & Deep Learning
+# Fake News Detection using Machine Learning and Deep Learning
 
-An end-to-end natural language processing (NLP) and machine learning framework designed to automatically detect and classify fake news articles. This project benchmarks traditional Machine Learning classifiers against a Deep Learning sequential architecture on a large-scale corpus, integrating structural syntax profiling and sentiment analysis to identify deceptive writing signatures.
-
----
+This repository contains the implementation of my Master's dissertation project at the **University of Essex**, focused on developing an automated framework to detect misinformation with high precision.
 
 ## 📌 Project Overview
-Manual fact-checking is unscalable against the velocity of digital misinformation. Fake news is often engineered with specific psychological triggers, emotional exaggeration, and distinct structural anomalies. This framework provides an automated approach to isolate these patterns using a dataset of nearly 45,000 articles.
+The proliferation of fake news on social media poses a significant threat to public trust and democracy. This project implements and compares various **Machine Learning** and **Deep Learning** models to identify deceptive news articles by analyzing their linguistic, structural, and emotional characteristics.
 
-By evaluating both feature-engineered statistical classifiers and raw sequence-learning deep neural networks, this project establishes a definitive performance hierarchy for automated deception detection.
+Using the **ISOT Fake News Dataset** (~45,000 articles), I developed a pipeline that achieves near-perfect classification accuracy, specifically highlighting the power of deep learning in capturing complex semantic patterns.
 
----
+## 🚀 Key Features
+- **Comprehensive NLP Pipeline:** Advanced text preprocessing including deduplication, lemmatization, and POS tagging.
+- **Hybrid Feature Engineering:** Combination of content-based features, structural linguistic markers, and sentiment analysis.
+- **Model Benchmarking:** Comparative study of Naive Bayes, SVM, Random Forest, XGBoost, and BiLSTM.
+- **Sentiment Integration:** Evaluation of how emotional polarity and subjectivity impact detection efficacy.
 
-## 🛠️ Tech Stack & Dependencies
-* **Core Language:** Python 3.x
-* **Deep Learning:** TensorFlow 2.x, Keras
-* **Machine Learning:** Scikit-Learn, XGBoost
-* **Natural Language Processing:** NLTK, SpaCy, TextBlob
-* **Data Science Infrastructure:** Pandas, NumPy, Matplotlib, Seaborn
+## 📊 Performance Summary
+| Model | Accuracy | Precision | Recall | F1-Score |
+| :--- | :--- | :--- | :--- | :--- |
+| **BiLSTM** | **99.9%** | **99.9%** | **100%** | **99.9%** |
+| XGBoost | 98.1% | 97.7% | 98.2% | 97.9% |
+| SVM | 97.2% | 96.3% | 97.5% | 96.9% |
+| Random Forest| 96.1% | 95.1% | 96.2% | 95.6% |
+| Naive Bayes | 86.1% | 70.1% | 98.6% | 82.0% |
 
----
+## 🛠️ Tech Stack
+- **Language:** Python
+- **Libraries:** TensorFlow, Keras, Scikit-learn, NLTK, Spacy, TextBlob
+- **Data Handling:** Pandas, NumPy
+- **Visualization:** Matplotlib, Seaborn
 
-### 1. Data Engineering & Rigorous Preprocessing
-The framework ingests the public **ISOT Fake News Dataset** (44,898 total records), containing verified news from `Reuters.com` alongside flagged fabrications from `Politifact.com`.
-* **Data Deduplication:** Identified and purged severe duplicate clusters across text and title vectors to eliminate training bias and prevent validation data leakage.
-* **Linguistic Stabilization:** Transformed unstructured inputs via lowercasing, alphanumeric regular expression cleaning, and web URL/HTML stripping.
-* **Token Reduction:** Stripped high-frequency, low-value syntax utilizing custom NLTK stopwords, applying Porter Stemming to collapse standard vocabularies to their foundational base forms.
+## 📂 Project Structure
+- `data/`: Contains links to the ISOT dataset (fake.csv, true.csv).
+- `preprocessing/`: Scripts for data cleaning, tokenization, and POS tagging.
+- `models/`: Implementations of ML classifiers and the BiLSTM neural network.
+- `notebooks/`: Exploratory Data Analysis (EDA) and Model Training logs.
 
-### 2. Hybrid Feature Engineering & Selection
-To expose subtle variance in writing mechanics, a multi-tiered engineered feature matrix was constructed:
-* **Syntactic Structure (POS Tagging):** Implemented programmatic Part-of-Speech tracking with SpaCy to monitor grammatical density. Deceptive text historically demonstrates isolated patterns in the distribution frequency of adverbs, pronouns, proper nouns, and exclamation flags.
-* **Sentiment Intensity Metrics:** Extracted continuous polarity (`[-1.0, 1.0]`) and subjectivity (`[0.0, 1.0]`) coefficients via TextBlob to capture the sensationalism index characteristic of yellow journalism.
-* **Dimensionality Maximization:** Applied **Mutual Information (MI) Scoring** to evaluate non-linear feature relationships, selecting the top 15 highest-ranked architectural features to bundle alongside dense Word2Vec document embeddings.
+## 🔍 Key Findings
+- **Deep Learning Superiority:** The BiLSTM model outperformed ensemble methods by effectively capturing bidirectional contextual dependencies.
+- **Sentiment Value:** While sentiment alone provides moderate predictive power (~74% accuracy), it significantly enhances model robustness when combined with structural features.
+- **Linguistic Markers:** Fake news consistently shows distinct patterns in part-of-speech distribution (e.g., higher use of pronouns and verbs vs. nouns in real news).
 
-### 3. Model Architecture Strategy
-The processed matrix was isolated via an 80/20 partition to backtest performance dynamics across distinct mathematical strategies:
-* **Traditional & Probabilistic Classifiers:** Baseline profiling using Gaussian/Multinomial Naive Bayes alongside high-dimensional Support Vector Machine (SVM) decision boundaries.
-* **Ensemble Tree Optimizations:** Implemented parallelized Random Forests and gradient-boosted decision trees via XGBoost with custom $L_1$/$L_2$ structural regularization parameters to ingest the engineered feature matrix.
-* **Deep Learning Sequence Modeling (BiLSTM):** Assembled a deep sequential neural network mapping words to dense 120-dimensional embedding layers. The sequences are ingested by a **Bidirectional Long Short-Term Memory (BiLSTM)** layer, reading tokens simultaneously in forward and backward configurations to preserve structural syntax dependencies before reaching a dense classification head.
-
----
-
-## 📊 Performance Matrix & Key Benchmark Insights
-
-| Model Architecture | Test Accuracy | Precision | Recall | F1-Score | AUC-ROC |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Naive Bayes** | 86.09% | 70.19% | 98.70% | 82.04% | 0.85 |
-| **Random Forest** | 96.10% | 95.11% | 96.23% | 95.67% | 0.96 |
-| **Support Vector Machine (SVM)** | 97.27% | 96.33% | 97.60% | 96.96% | 0.97 |
-| **XGBoost (Top ML Model)** | **98.18%** | **97.77%** | **98.20%** | **97.99%** | **0.98** |
-| **Bidirectional LSTM (Deep Learning)** | **99.90%** | **99.90%** | **100.00%** | **99.90%** | **1.00** |
-
-### 🔍 Key Analytic Observations
-* **The Dominance of Context:** The **BiLSTM model outperformed all standard ML methods (99.90% Accuracy)**. Because it reads textual semantics in both directions, it successfully captured long-range structural dependencies and semantic nuances that standard n-gram token counts or linear lines ignore.
-* **The Sentiment Paradox:** Backtesting the XGBoost classifier **solely on isolated emotional sentiment vectors caused accuracy to collapse to 73.97%**. However, when emotional metrics were *combined* with structural POS counts and text distributions, precision metrics stabilized. This mathematically proves that emotional tone is an unsafe diagnostic tool on its own, but serves as an excellent accelerator when contextualized alongside structural text features.
-
----
-
-## 📈 Scalability & Future Research Direction
-* **Transformer Architectures:** Porting sequential structures to Transformer topologies (e.g., BERT, RoBERTa) to execute multi-headed self-attention operations over larger contexts.
-* **Multimodal Streaming Analytics:** Scaling the internal pipelines to parse streaming WebSocket social APIs, extending feature ingestion frameworks to cross-reference localized graphic metadata and image assets alongside plain text.
-
+## 🎓 Academic Context
+- **Institution:** University of Essex (School of Mathematics, Statistics and Actuarial Science)
+- **Course:** MA981 Dissertation
+- **Supervisor:** Dr. Tao Gao
